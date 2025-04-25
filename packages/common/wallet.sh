@@ -25,13 +25,15 @@ check_balance() {
 dev_wallet() {
     print_step "1" "Generating new dev wallet"
     # CAUTION: DO NOT GENERATE A KEYPAIR LIKE THIS FOR PRODUCTION
-    local keypair=$(scast wallet new)
+    local keypair=$(cast wallet new)
     DEV_WALLET_ADDRESS=$(echo "$keypair" | grep "Address:" | awk '{print $2}')
     DEV_WALLET_PRIVKEY=$(echo "$keypair" | grep "Private key:" | awk '{print $3}')
     if [ -z "$DEV_WALLET_ADDRESS" ]; then
         echo -e "${RED}Error: Failed to create dev wallet. Please make sure sfoundry is installed.${NC}"
         exit 1
     fi
+    echo -e "${GREEN}Wallet Address: ${DEV_WALLET_ADDRESS}${NC}"
+    echo -e "${GREEN}Private Key: ${DEV_WALLET_PRIVKEY}${NC}"
     print_success "Success"
 
     print_step "2" "Funding wallet"
